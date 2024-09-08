@@ -151,3 +151,9 @@ HAVING
 -- Quando faccio query su campo aggregato comunque serve HAVING
 
 -- Selezionare tutti gli eventi, mostrando il nome dell’evento, il nome della location, il numero di prenotazioni e il totale di biglietti ancora disponibili per l’evento (1040)
+SELECT `events`.`name`, `locations`.`name`, COUNT(`bookings`.`event_id`) AS `numero_prenotazioni`, `events`.`total_tickets` - COUNT(`bookings`.`event_id`) AS `biglietti_disponibili`
+FROM `events`
+    INNER JOIN `locations` ON `locations`.`id` = `events`.`location_id`
+    INNER JOIN `bookings` ON `events`.`id` = `bookings`.`event_id`
+GROUP BY 
+    `events`.`id`
