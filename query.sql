@@ -129,6 +129,25 @@ HAVING
     COUNT(`bookings`.`event_id`) = `events`.`total_tickets`
 -- HAVING, quando bisogna usare funzioni di aggregazione 
 
--- Selezionare tutte le location in ordine per chi ha ospitato più eventi (82) Selezionare tutti gli utenti che si sono prenotati a più di 70 eventi (74)
+-- Selezionare tutte le location in ordine per chi ha ospitato più eventi (82) 
+SELECT
+    `locations`.*, COUNT(`events`.`id`) AS `counter_eventi`
+FROM
+    `locations`
+    INNER JOIN `events` ON `locations`.`id` = `events`.`location_id`
+GROUP BY 
+    `locations`.`id`
+ORDER BY
+    `counter_eventi` DESC;
+
+-- Selezionare tutti gli utenti che si sono prenotati a più di 70 eventi (74)
+SELECT `users`.`username`, COUNT(`bookings`.`user_id`) AS `numero_prenotazioni`
+FROM `users`
+    INNER JOIN `bookings` ON `users`.`id` = `bookings`.`user_id`
+GROUP BY 
+    `users`.`id`
+HAVING 
+    `numero_prenotazioni` > 70;
+-- Quando faccio query su campo aggregato comunque serve HAVING
 
 -- Selezionare tutti gli eventi, mostrando il nome dell’evento, il nome della location, il numero di prenotazioni e il totale di biglietti ancora disponibili per l’evento (1040)
